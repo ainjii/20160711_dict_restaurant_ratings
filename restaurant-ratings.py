@@ -1,6 +1,7 @@
 # your code goes here
 import sys
 from collections import OrderedDict
+from random import randint
 
 def rate_restaurants(filename):
     """Lists restaurant ratings.
@@ -34,16 +35,36 @@ def rate_restaurants(filename):
         rating = int(restaurant_data[1])
         restaurant_dict[name] = rating
 
-    sorted_ratings = OrderedDict(sorted(restaurant_dict.items(), key=lambda restaurant: restaurant[0]))
+    user_name = raw_input("Hello! What is your name? ")
+    refresh_random = True
 
-    for restaurant, rating in sorted_ratings.iteritems():
-        print "%s is rated at %d." % (restaurant, rating)
+    while True:
+        if refresh_random:
+            random_number = randint(0,len(restaurant_dict.keys())-1)
+            random_name = restaurant_dict.keys()[random_number]
+            random_rating = restaurant_dict[random_name]
+
+        print "The rating for the restaurant %s is %d." % (random_name, random_rating)
+        
+        try:
+            new_rating = raw_input("%s, what should the restaurant's rating be? " % user_name)
+            new_rating = int(new_rating)
+            refresh_random = True
+        except ValueError:
+            if new_rating == "q":
+                break
+            else:
+                print "You must enter a valid integer."
+                refresh_random = False
+                continue
+
+        restaurant_dict[random_name] = new_rating
+
+        sorted_ratings = OrderedDict(sorted(restaurant_dict.items(), key=lambda restaurant: restaurant[0]))
+
+        for restaurant, rating in sorted_ratings.iteritems():
+            print "%s is rated at %d." % (restaurant, rating)
+    
 
 filename = sys.argv[1]
 rate_restaurants(filename)
-
-if __name__ == "__main__":
-    import doctest
-    result = doctest.testmod()
-    if result.failed == 0:
-        print "ALL TESTS PASSED"
