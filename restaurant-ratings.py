@@ -1,25 +1,9 @@
 # your code goes here
 import sys
-from collections import OrderedDict
-from random import randint
+from random import choice
 
 def rate_restaurants(filename):
     """Lists restaurant ratings.
-
-    For example:
-        >>> rate_restaurants("scores.txt")
-        Andalu is rated at 3.
-        Arinell's is rated at 4.
-        Bay Blend Coffee and Tea is rated at 3.
-        Casa Thai is rated at 2.
-        Charanga is rated at 3.
-        El Toro is rated at 5.
-        Giordano Bros is rated at 2.
-        Irma's Pampanga is rated at 5.
-        Little Baobab is rated at 1.
-        Pancho Villa is rated at 3.
-        Taqueria Cancun is rated at 2.
-        Urbun Burger is rated at 1.
 
     Prints restaurant data, alphabetically by name.
     """
@@ -40,8 +24,7 @@ def rate_restaurants(filename):
 
     while True:
         if refresh_random:
-            random_number = randint(0,len(restaurant_dict.keys())-1)
-            random_name = restaurant_dict.keys()[random_number]
+            random_name = choice(restaurant_dict.keys())
             random_rating = restaurant_dict[random_name]
 
         print "The rating for the restaurant %s is %d." % (random_name, random_rating)
@@ -49,14 +32,6 @@ def rate_restaurants(filename):
         try:
             new_rating = raw_input("\n%s, what should the restaurant's rating be? (1-5) " % user_name)
             new_rating = int(new_rating)
-
-            if new_rating <= 5 and new_rating >=1:
-                print "You have changed the restaurant's rating to %d." % new_rating
-                refresh_random = True
-            else:
-                refresh_random = False
-                print "The rating must be between 1 and 5."
-                continue
 
         except ValueError:
             if new_rating == "q":
@@ -66,11 +41,19 @@ def rate_restaurants(filename):
                 refresh_random = False
                 continue
 
+        if new_rating <= 5 and new_rating >=1:
+            print "You have changed the restaurant's rating to %d." % new_rating
+            refresh_random = True
+        else:
+            refresh_random = False
+            print "The rating must be between 1 and 5."
+            continue
+
         restaurant_dict[random_name] = new_rating
 
-        sorted_ratings = OrderedDict(sorted(restaurant_dict.items(), key=lambda restaurant: restaurant[0]))
+        sorted_ratings = sorted(restaurant_dict.items())
 
-        for restaurant, rating in sorted_ratings.iteritems():
+        for restaurant, rating in sorted_ratings:
             print "%s is rated at %d." % (restaurant, rating)
     
 
