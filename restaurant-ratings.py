@@ -47,9 +47,17 @@ def rate_restaurants(filename):
         print "The rating for the restaurant %s is %d." % (random_name, random_rating)
         
         try:
-            new_rating = raw_input("%s, what should the restaurant's rating be? " % user_name)
+            new_rating = raw_input("\n%s, what should the restaurant's rating be? (1-5) " % user_name)
             new_rating = int(new_rating)
-            refresh_random = True
+
+            if new_rating <= 5 and new_rating >=1:
+                print "You have changed the restaurant's rating to %d." % new_rating
+                refresh_random = True
+            else:
+                refresh_random = False
+                print "The rating must be between 1 and 5."
+                continue
+
         except ValueError:
             if new_rating == "q":
                 break
